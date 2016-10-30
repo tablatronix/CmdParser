@@ -81,7 +81,7 @@ bool CmdBufferObject::readFromSerial(Stream *serial, uint32_t timeOut)
                 return false;
             }
         }
-
+        yield();
     } while (true); // timeout
 
     return false;
