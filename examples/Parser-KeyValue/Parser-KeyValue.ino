@@ -9,7 +9,7 @@
 // It parse a command line from string buffer or CmdBuffer.
 ////
 
-#include <CmdParser.hpp>
+#include <CmdParser.h>
 
 CmdParser cmdParser;
 

@@ -10,9 +10,9 @@
 // This exemple is without Key Value parser function
 ////
 
-#include <CmdBuffer.hpp>
-#include <CmdCallback.hpp>
-#include <CmdParser.hpp>
+#include <CmdBuffer.h>
+#include <CmdCallback.h>
+#include <CmdParser.h>
 
 CmdCallback<3> cmdCallback;
 

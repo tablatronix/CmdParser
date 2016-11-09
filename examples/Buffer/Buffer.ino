@@ -9,7 +9,7 @@
 // It will read printable data from serial into modern buffer
 ////
 
-#include <CmdBuffer.hpp>
+#include <CmdBuffer.h>
 
 // Create a buffer with size of 64 characters
 CmdBuffer<64> cmdBuffer;

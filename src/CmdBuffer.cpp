@@ -4,7 +4,7 @@
  * https://github.com/pvizeli/CmdParser
  */
 
-#include "CmdBuffer.hpp"
+#include "CmdBuffer.h"
 
 bool CmdBufferObject::readFromSerial(Stream *serial, uint32_t timeOut)
 {

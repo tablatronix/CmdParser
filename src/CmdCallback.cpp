@@ -4,7 +4,7 @@
  * https://github.com/pvizeli/CmdParser
  */
 
-#include "CmdCallback.hpp"
+#include "CmdCallback.h"
 
 void CmdCallbackObject::loopCmdProcessing(CmdParser *      cmdParser,
                                           CmdBufferObject *cmdBuffer,

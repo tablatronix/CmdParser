@@ -4,7 +4,7 @@
  * https://github.com/pvizeli/CmdParser
  */
 
-#include "CmdParser.hpp"
+#include "CmdParser.h"
 
 CmdParser::CmdParser()
     : m_ignoreQuote(false),
