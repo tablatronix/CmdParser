@@ -22,6 +22,7 @@ void CmdCallbackObject::loopCmdProcessing(CmdParser *      cmdParser,
                 }
             }
         }
+     yield();
     } while (true);
 }
 
