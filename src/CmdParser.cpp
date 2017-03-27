@@ -23,7 +23,10 @@ uint16_t CmdParser::parseCmd(uint8_t *buffer, size_t bufferSize)
     // init param count
     m_paramCount ^= m_paramCount;
 
-    // buffer is not okay
+    Serial.print("bufferSize:");
+    Serial.println(bufferSize);
+
+    // buffer is not okay, does not catch whitespace only strings
     if (buffer == NULL || bufferSize == 0) {
         return CMDPARSER_ERROR;
     }
@@ -38,6 +41,8 @@ uint16_t CmdParser::parseCmd(uint8_t *buffer, size_t bufferSize)
 
         // end
         if (buffer[i] == 0x00 || m_paramCount == 0xFFFE) {
+            // Serial.println(buffer[i],HEX);
+            // Serial.println("EMPTY");
             return m_paramCount;
         }
         // is string "xy zyx" / only the quote option is disabled
@@ -67,12 +72,12 @@ char *CmdParser::getCmdParam(uint16_t idx)
 {
     uint16_t count = 0;
 
-    // idx bigger than exists param
+    // idx greater than param count, 
     if (idx > m_paramCount) {
         return NULL;
     }
 
-    // search hole cmd buffer
+    // search whole cmd buffer
     for (size_t i = 0; i < m_bufferSize; i++) {
 
         // find next position
@@ -80,7 +85,9 @@ char *CmdParser::getCmdParam(uint16_t idx)
             count++;
         }
 
-        // found indx with next character
+        // found idx
+        // Serial.print("raw: ");
+        // Serial.println(m_buffer[i],HEX);
         if (count == idx && m_buffer[i] != 0x00) {
             return reinterpret_cast<char *>(&m_buffer[i]);
         }

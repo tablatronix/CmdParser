@@ -15,6 +15,7 @@
 const uint8_t CMDBUFFER_CHAR_PRINTABLE = 0x1F;
 const uint8_t CMDBUFFER_CHAR_LF        = 0x0A;
 const uint8_t CMDBUFFER_CHAR_CR        = 0x0D;
+const uint8_t CMDBUFFER_CHAR_CRLF      = 0x00; // CR or LF
 
 /**
  *
@@ -38,6 +39,7 @@ class CmdBufferObject
      *                      is a timeout receive or buffer is full.
      */
     bool readFromSerial(Stream *serial, uint32_t timeOut = 0);
+    bool readFromSerialnonblocking(Stream *serial, uint32_t timeOut = 0);
 
     /**
      * Set a ASCII character for serial cmd end.
@@ -80,9 +82,16 @@ class CmdBufferObject
      */
     virtual size_t getBufferSize() = 0;
 
+    virtual size_t getBufferPtr()  = 0;
+    virtual uint32_t getBufferStartTime() = 0;
+
+
   private:
     /** Character for handling the end of serial data communication */
     uint8_t m_endChar;
+
+    virtual void setBufferPtr(size_t)  = 0;
+    virtual void setBufferStartTime(uint32_t) = 0;
 };
 
 /**
@@ -96,12 +105,19 @@ class CmdBuffer : public CmdBufferObject
     /**
      * Cleanup Buffers
      */
-    CmdBuffer() { this->clear(); }
+    CmdBuffer() { 
+    	this->clear();
+        this->m_readPtr ^= this->m_readPtr; // init ptr idx
+	}
 
     /**
      * @interface CmdBufferObject
      */
-    virtual void clear() { memset(m_buffer, 0x00, BUFFERSIZE + 1); }
+    virtual void clear() { 
+    	memset(m_buffer, 0x00, BUFFERSIZE + 1); 
+    	this->m_readPtr = 0;
+    	this->m_startTime = 0;
+    }
 
     /**
      * @interface CmdBufferObject
@@ -112,10 +128,17 @@ class CmdBuffer : public CmdBufferObject
      * @interface CmdBufferObject
      */
     virtual size_t getBufferSize() { return BUFFERSIZE; }
+    virtual size_t getBufferPtr()  { return m_readPtr;}
+    virtual uint32_t getBufferStartTime()  { return m_startTime;}
 
   private:
     /** Buffer for reading data from serial input */
     uint8_t m_buffer[BUFFERSIZE + 1];
+    size_t m_readPtr;
+    uint32_t  m_startTime;
+
+    virtual void setBufferPtr(size_t ptr)  { m_readPtr = ptr;}
+    virtual void setBufferStartTime(uint32_t starttime)  { m_startTime = starttime;}
 };
 
 #endif
